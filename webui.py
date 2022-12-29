@@ -1,3 +1,4 @@
+import intel_extension_for_pytorch
 import os
 import threading
 import time

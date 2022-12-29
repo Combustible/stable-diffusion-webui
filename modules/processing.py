@@ -884,8 +884,8 @@ class StableDiffusionProcessingImg2Img(StableDiffusionProcessing):
             latmask = np.around(latmask)
             latmask = np.tile(latmask[None], (4, 1, 1))
 
-            self.mask = torch.asarray(1.0 - latmask).to(shared.device).type(self.sd_model.dtype)
-            self.nmask = torch.asarray(latmask).to(shared.device).type(self.sd_model.dtype)
+            self.mask = torch.tensor(1.0 - latmask).to(shared.device).type(self.sd_model.dtype)
+            self.nmask = torch.tensor(latmask).to(shared.device).type(self.sd_model.dtype)
 
             # this needs to be fixed to be done in sample() using actual seeds for batches
             if self.inpainting_fill == 2:

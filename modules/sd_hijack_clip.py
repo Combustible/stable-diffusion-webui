@@ -229,8 +229,7 @@ class FrozenCLIPEmbedderWithCustomWordsBase(torch.nn.Module):
         if not opts.use_old_emphasis_implementation:
             remade_batch_tokens = [[self.id_start] + x[:75] + [self.id_end] for x in remade_batch_tokens]
             batch_multipliers = [[1.0] + x[:75] + [1.0] for x in batch_multipliers]
-
-        tokens = torch.asarray(remade_batch_tokens).to(devices.device)
+        tokens = torch.tensor(remade_batch_tokens).to(devices.device)
 
         if self.id_end != self.id_pad:
             for batch_pos in range(len(remade_batch_tokens)):
@@ -241,7 +240,7 @@ class FrozenCLIPEmbedderWithCustomWordsBase(torch.nn.Module):
 
         # restoring original mean is likely not correct, but it seems to work well to prevent artifacts that happen otherwise
         batch_multipliers_of_same_length = [x + [1.0] * (75 - len(x)) for x in batch_multipliers]
-        batch_multipliers = torch.asarray(batch_multipliers_of_same_length).to(devices.device)
+        batch_multipliers = torch.tensor(batch_multipliers_of_same_length).to(devices.device)
         original_mean = z.mean()
         z *= batch_multipliers.reshape(batch_multipliers.shape + (1,)).expand(z.shape)
         new_mean = z.mean()
